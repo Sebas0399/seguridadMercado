@@ -32,7 +32,10 @@ public class HttpSecurityConfig {
 
                     authConfig.requestMatchers(HttpMethod.POST,"/auth/authenticate").permitAll();
                     authConfig.requestMatchers(HttpMethod.GET,"/auth/public-access").permitAll();
+                    authConfig.requestMatchers(HttpMethod.GET,"/auth/all").permitAll();
+                    authConfig.requestMatchers(HttpMethod.POST,"/usuario/registro").permitAll();
                     authConfig.requestMatchers("/error").permitAll();
+
 
                     authConfig.requestMatchers(HttpMethod.GET,"/guias").hasAnyAuthority(Permission.READ_ALL_PRODUCTS.name());
 

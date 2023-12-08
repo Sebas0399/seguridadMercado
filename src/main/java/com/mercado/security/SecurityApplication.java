@@ -2,6 +2,7 @@ package com.mercado.security;
 
 import com.mercado.security.entity.Guia;
 import com.mercado.security.repository.GuiaRepository;
+import com.mercado.security.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -19,12 +20,16 @@ public class SecurityApplication {
 	private PasswordEncoder passwordEncoder;
 	@Autowired
 	private GuiaRepository guiaRepository;
+
+	@Autowired
+	private UsuarioRepository usuarioRepository;
 	@Bean
 	public CommandLineRunner createPasswordsCommand(){
 		return  args -> {
 			System.out.println(passwordEncoder.encode("clave123"));
 			System.out.println(passwordEncoder.encode("clave456"));
 
+//			System.out.println(usuarioRepository.findUserByCedula("1725776650"));
 
 		};
 	}

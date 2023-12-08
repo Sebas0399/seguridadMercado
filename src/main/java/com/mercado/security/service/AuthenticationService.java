@@ -30,7 +30,6 @@ public class AuthenticationService {
         String jwt=jwtService.generateToken(usuario,generateExtraClaims(usuario));
       
         return new AuthenticationResponse(jwt);
-
     }
 
     private Map<String,Object> generateExtraClaims(Usuario usuario) {
