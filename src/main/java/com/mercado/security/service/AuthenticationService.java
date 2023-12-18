@@ -28,7 +28,7 @@ public class AuthenticationService {
         authenticationManager.authenticate(authenticationToken);
         Usuario usuario=usuarioRepository.findUserByCedula(authenticationRequest.getUserName()).get();
         String jwt=jwtService.generateToken(usuario,generateExtraClaims(usuario));
-      
+
         return new AuthenticationResponse(jwt);
     }
 

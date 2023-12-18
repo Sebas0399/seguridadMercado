@@ -24,7 +24,7 @@ public class UsuarioController {
     @Autowired
     private UsuarioRepository usuarioRepository;
     @PostMapping("/registro")
-    public ResponseEntity<Usuario> login(@RequestBody Usuario usuario){
+    public ResponseEntity<Usuario> registro(@RequestBody Usuario usuario){
         String key= usuario.getPassword();
         usuario.setPassword(passwordEncoder.encode(key));
         usuario.setFecha(LocalDateTime.now());

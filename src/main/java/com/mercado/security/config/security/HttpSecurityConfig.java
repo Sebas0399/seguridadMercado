@@ -34,6 +34,7 @@ public class HttpSecurityConfig {
                     authConfig.requestMatchers(HttpMethod.GET,"/auth/public-access").permitAll();
                     authConfig.requestMatchers(HttpMethod.GET,"/auth/all").permitAll();
                     authConfig.requestMatchers(HttpMethod.POST,"/usuario/registro").permitAll();
+                    authConfig.requestMatchers(HttpMethod.POST,"/auth/validarToken").permitAll();
                     authConfig.requestMatchers("/error").permitAll();
 
 
