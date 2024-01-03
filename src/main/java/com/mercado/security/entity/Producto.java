@@ -4,25 +4,19 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
-@Document(collection = "guia")
+@Document(collection = "productos")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Guia {
+public class Producto {
 
     @Id
     private String id;
+    private String nombre;
+    private String codigo;
 
-    private String numero;
-    private LocalDateTime fecha;
-
-    @DBRef
-    private List<Producto> productos;
-
+    private int cantidad = 1;
+    private String medida;
 }

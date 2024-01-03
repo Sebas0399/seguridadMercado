@@ -7,22 +7,19 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
-@Document(collection = "guia")
+@Document(collection = "cantones")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Guia {
+public class Canton {
 
     @Id
     private String id;
-
-    private String numero;
-    private LocalDateTime fecha;
+    private String codigo;
+    private String nombre;
 
     @DBRef
-    private List<Producto> productos;
-
+    private List<Parroquia> parroquias;
 }
