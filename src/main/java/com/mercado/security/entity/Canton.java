@@ -21,5 +21,8 @@ public class Canton {
     private String nombre;
 
     @DBRef
+    private Provincia provincia;
+
+    @DBRef
     private List<Parroquia> parroquias;
 }

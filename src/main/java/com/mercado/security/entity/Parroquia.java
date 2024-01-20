@@ -21,5 +21,6 @@ public class Parroquia {
     private String nombre;
 
     @DBRef
-    private List<Producto> productos;
+    private Canton canton;
+
 }
