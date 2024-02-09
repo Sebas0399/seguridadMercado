@@ -27,7 +27,7 @@ public class Usuario implements UserDetails {
     private String apellidos;
     private String cedula;
 
-    private  String destino;
+    private String destino;
     private String local;
     private String plataforma;
 
@@ -49,66 +49,11 @@ public class Usuario implements UserDetails {
         return authorities;
     }
 
-    //GET SET
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getNombres() {
-        return nombres;
-    }
-
-    public void setNombres(String nombres) {
-        this.nombres = nombres;
-    }
-
-    public String getApellidos() {
-        return apellidos;
-    }
-
-    public void setApellidos(String apellidos) {
-        this.apellidos = apellidos;
-    }
-
-    public void setCedula(String cedula) {
-        this.cedula = cedula;
-    }
 
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public String getDestino() {
-        return destino;
-    }
-
-    public void setDestino(String destino) {
-        this.destino = destino;
-    }
-
-    public String getLocal() {
-        return local;
-    }
-
-    public void setLocal(String local) {
-        this.local = local;
-    }
-
-    public String getPlataforma() {
-        return plataforma;
-    }
-
-    public void setPlataforma(String plataforma) {
-        this.plataforma = plataforma;
-    }
-
-    public void setRol(Role rol) {
-        this.rol = rol;
-    }
     @Override
     public String getPassword() {
         return password;
@@ -139,18 +84,6 @@ public class Usuario implements UserDetails {
         return true;
     }
 
-
-    public String getCedula() {
-        return cedula;
-    }
-
-    public Role getRol() {
-        return rol;
-    }
-
-    public LocalDateTime getFecha() {
-        return fecha;
-    }
 
     public void setFecha(LocalDateTime fecha) {
         this.fecha = fecha;

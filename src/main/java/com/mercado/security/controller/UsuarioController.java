@@ -32,4 +32,6 @@ public class UsuarioController {
         usuarioRepository.insert(usuario);
         return ResponseEntity.ok(usuario);
     }
+
+
 }

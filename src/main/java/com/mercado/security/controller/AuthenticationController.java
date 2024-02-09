@@ -43,7 +43,7 @@ private JwtService jwtService;
         return ResponseEntity.ok("EndPointPublico");
     }
     @PostMapping(value = "/validarToken",consumes = MediaType.APPLICATION_JSON_VALUE)
-public ResponseEntity<Boolean>validarSession(@RequestBody AuthenticationResponse token)
+    public ResponseEntity<Boolean>validarSession(@RequestBody AuthenticationResponse token)
     { System.out.println(token);
         var valido=jwtService.isTokenValid(token.getJwt());
         System.out.println(valido);
