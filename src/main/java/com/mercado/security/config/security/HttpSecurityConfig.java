@@ -38,9 +38,11 @@ public class HttpSecurityConfig {
                     authConfig.requestMatchers("/error").permitAll();
 
 
-                    authConfig.requestMatchers(HttpMethod.GET,"/guias").hasAnyAuthority(Permission.READ_ALL_PRODUCTS.name());
+                    //authConfig.requestMatchers(HttpMethod.GET,"/guias").hasAnyAuthority(Permission.READ_ALL_PRODUCTS.name());
 
-                    authConfig.requestMatchers(HttpMethod.POST,"/guias").hasAnyAuthority(Permission.SAVE_ONE_PRODUCT.name());
+                    //authConfig.requestMatchers(HttpMethod.POST,"/guias").hasAnyAuthority(Permission.SAVE_ONE_PRODUCT.name());
+
+                    authConfig.requestMatchers(HttpMethod.GET,"guias/buscarAD").permitAll();
 
                     authConfig.anyRequest().permitAll();
 

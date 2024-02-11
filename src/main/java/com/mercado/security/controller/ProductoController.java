@@ -41,7 +41,6 @@ public class ProductoController {
 
     @GetMapping(path = "/{nombre}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity <List<Producto>>buscarProducto(@PathVariable String nombre){
-        System.out.println("Hola 2");
         List<Producto> listaProductos=productoRepository.findAll();
 
         List<Producto> filtro = new ArrayList<>();

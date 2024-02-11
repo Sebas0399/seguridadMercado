@@ -18,5 +18,5 @@ public class Producto {
     private String codigo;
 
     private int cantidad = 1;
-    private String medida;
+    private String presentacion;
 }
