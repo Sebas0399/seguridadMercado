@@ -12,5 +12,6 @@ import java.util.Optional;
 
 public interface ProductoRepository extends MongoRepository<Producto,String> {
 
+    Optional<List<Producto>> findByNombreContainingIgnoreCase(String nombre);
 
 }

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,6 +26,7 @@ public class AuthenticationController {
 private JwtService jwtService;
     @Autowired
     private UsuarioRepository usuarioRepository;
+    @PreAuthorize("permitAll")
     @PostMapping("/authenticate")
     public ResponseEntity <AuthenticationResponse>login(@RequestBody @Valid AuthenticationRequest authRequest){
 
@@ -38,15 +40,11 @@ private JwtService jwtService;
 
 
     }
-    @GetMapping("/public-access")
-    public ResponseEntity<String > publicAccessEndPoint(){
-        return ResponseEntity.ok("EndPointPublico");
-    }
+
     @PostMapping(value = "/validarToken",consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Boolean>validarSession(@RequestBody AuthenticationResponse token)
     { System.out.println(token);
         var valido=jwtService.isTokenValid(token.getJwt());
-        System.out.println(valido);
         if(valido){
             return ResponseEntity.ok(valido);
         }

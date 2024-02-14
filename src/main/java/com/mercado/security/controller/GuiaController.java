@@ -1,27 +1,31 @@
 package com.mercado.security.controller;
 
-import com.mercado.security.dto.ProductosTO;
+import com.mercado.security.dto.ProductoTO;
 import com.mercado.security.entity.Guia;
 import com.mercado.security.entity.Producto;
 import com.mercado.security.repository.GuiaRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
+import javax.xml.crypto.Data;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+
 @RestController
 @RequestMapping("/guias")
 @CrossOrigin
 public class GuiaController {
     @Autowired
     GuiaRepository guiaRepository;
+    @PreAuthorize("hasAuthority('READ_ALL_GUIAS')")
+
     @GetMapping
     public ResponseEntity<List<Guia>>findAll(){
 
@@ -33,6 +37,8 @@ public class GuiaController {
             return ResponseEntity.notFound().build();
         }
     }
+    @PreAuthorize("hasAuthority('SAVE_ONE_GUIA')")
+
     @PostMapping
     public ResponseEntity<Guia>createOne(@RequestBody @Valid Guia guia){
         return ResponseEntity.status(HttpStatus.CREATED).body(
@@ -40,6 +46,7 @@ public class GuiaController {
         );
     }
 
+    @PreAuthorize("hasAuthority('SAVE_ONE_GUIA')")
 
     @PostMapping(path = "save",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Guia>guardarGuia(@RequestBody Guia guia){
@@ -49,14 +56,14 @@ public class GuiaController {
                 this.guiaRepository.save(guia)
         );
     }
+    @PreAuthorize("hasAuthority('READ_ALL_GUIAS')")
 
-    @GetMapping(path = "buscarAD",consumes=MediaType.APPLICATION_JSON_VALUE ,produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity <List<Producto>>buscarPorFechasNombre(@RequestBody ProductosTO productos){
-        System.out.println("esta vivo");
+    @PostMapping(path = "buscarAD")
+    public ResponseEntity <List<Producto>>buscarPorFechasNombre(@RequestBody  @Valid ProductoTO productos){
         List<Guia> listaGuias=guiaRepository.findGuiasByFechas(productos.getFechaInicio(), productos.getFechaFin());
         List<Producto> listaFinal=new ArrayList<>();
 
-        if (productos.getNombre().isEmpty()){
+        if (productos.getNombre()==null){
             for (Guia guias : listaGuias) {
                 List<Producto> listaProductos=guias.getProductos();
 
@@ -78,12 +85,20 @@ public class GuiaController {
         return ResponseEntity.ok(listaFinal);
     }
 
-
-    @GetMapping(path = "consulta2",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity <List<Guia>>buscarPorFechas2(@RequestBody ProductosTO productos){
-        List<Guia> listaGuias=guiaRepository.findGuiasByFechas(productos.getFechaInicio(), productos.getFechaFin());
-        return ResponseEntity.ok(listaGuias);
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Map<String,String>>handlerGenericException(Exception exception, HttpServletRequest httpServletRequest){
+        Map<String,String>apiError=new HashMap<>();
+        apiError.put("message",exception.getLocalizedMessage());
+        apiError.put("timestamp",new Date().toString());
+        apiError.put("url",httpServletRequest.getRequestURL().toString());
+        apiError.put("http-method",httpServletRequest.getMethod());
+        HttpStatus status=HttpStatus.INTERNAL_SERVER_ERROR;
+        if(exception instanceof AccessDeniedException){
+            status=HttpStatus.FORBIDDEN;
+        }
+        return ResponseEntity.status(status).body(apiError);
     }
+
 
 
 

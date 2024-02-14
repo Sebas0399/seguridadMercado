@@ -7,8 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -16,7 +19,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 @EnableWebSecurity
+@EnableMethodSecurity
 public class HttpSecurityConfig {
+
     @Autowired
     private AuthenticationProvider authenticationProvider;
     @Autowired
@@ -28,25 +33,31 @@ public class HttpSecurityConfig {
                 .sessionManagement(sessionManConfig->sessionManConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterAfter(authenticatonFilter, UsernamePasswordAuthenticationFilter.class)
-                .authorizeHttpRequests(authConfig->{
-
-                    authConfig.requestMatchers(HttpMethod.POST,"/auth/authenticate").permitAll();
-                    authConfig.requestMatchers(HttpMethod.GET,"/auth/public-access").permitAll();
-                    authConfig.requestMatchers(HttpMethod.GET,"/auth/all").permitAll();
-                    authConfig.requestMatchers(HttpMethod.POST,"/usuario/registro").permitAll();
-                    authConfig.requestMatchers(HttpMethod.POST,"/auth/validarToken").permitAll();
-                    authConfig.requestMatchers("/error").permitAll();
-
-
-                    //authConfig.requestMatchers(HttpMethod.GET,"/guias").hasAnyAuthority(Permission.READ_ALL_PRODUCTS.name());
-
-                    //authConfig.requestMatchers(HttpMethod.POST,"/guias").hasAnyAuthority(Permission.SAVE_ONE_PRODUCT.name());
-
-                    authConfig.requestMatchers(HttpMethod.GET,"guias/buscarAD").permitAll();
-
-                    authConfig.anyRequest().permitAll();
-
-                });
+                //.authorizeHttpRequests(builderRequestMatchers())
+        ;
         return httpSecurity.build();
+    }
+
+
+    private static Customizer<AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry> builderRequestMatchers() {
+        return authConfig -> {
+
+            authConfig.requestMatchers(HttpMethod.POST, "/auth/authenticate").permitAll();
+            authConfig.requestMatchers(HttpMethod.GET, "/auth/public-access").permitAll();
+            authConfig.requestMatchers(HttpMethod.GET, "/auth/all").permitAll();
+            authConfig.requestMatchers(HttpMethod.POST, "/usuario/registro").permitAll();
+            authConfig.requestMatchers(HttpMethod.POST, "/auth/validarToken").permitAll();
+            authConfig.requestMatchers("/error").permitAll();
+
+
+            authConfig.requestMatchers(HttpMethod.GET,"/guias").hasAnyAuthority(Permission.READ_ALL_GUIAS.name());
+
+            //authConfig.requestMatchers(HttpMethod.POST,"/guias").hasAnyAuthority(Permission.SAVE_ONE_PRODUCT.name());
+
+           // authConfig.requestMatchers(HttpMethod.GET, "guias/buscarAD").permitAll();
+
+           // authConfig.anyRequest().permitAll();
+
+        };
     }
 }
